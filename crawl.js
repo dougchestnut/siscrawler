@@ -1,5 +1,11 @@
 const scraper = require('sisscraper');
 const admin = require("firebase-admin");
+const commandLineArgs = require('command-line-args')
+
+const optionDefinitions = [
+  { name: 'latest', alias: 'l', type: Boolean }
+]
+const options = commandLineArgs(optionDefinitions)
 
 // Firebase setup stuff
 var serviceAccount = require("../../uva-api-firebase-adminsdk-ovbj8-ff0464c1dd.json");
@@ -232,6 +238,11 @@ scraper.getTerms(null,"GRAD","A").then( c=>{
 
 }
 
-runScrape().then(
-  ()=>{ process.exit(); }
-);
+if (options.latest) {
+  console.log('just the latest')
+  process.exit();
+} else {
+  runScrape().then(
+    ()=>{ process.exit(); }
+  );
+}
